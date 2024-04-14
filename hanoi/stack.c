@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void top(stack *myStack) { printf("The value at the top of the stack is: %d\n", myStack->top->value); }
+int top(stack *myStack) { return myStack->top->value; }
 
 stack *pop(stack *myStack)
 {
@@ -34,4 +34,29 @@ stack *startStack()
     stack *newStack = (stack *)malloc(sizeof(stack));
     newStack->top = NULL;
     return newStack;
+}
+
+void freeStack(stack *myStack)
+{
+    node *current = myStack->top;
+    node *temp;
+    while (current != NULL)
+    {
+        temp = current;
+        current = current->next;
+        free(temp);
+    }
+    free(myStack);
+}
+
+int stackLength(stack *myStack)
+{
+    node *aux = myStack->top;
+    int i = 0;
+    while(aux != NULL)
+    {
+        i++;
+        aux = aux->next;
+    }
+    return i;
 }
