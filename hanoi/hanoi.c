@@ -34,27 +34,76 @@ void freeHanoi(hanoi *tower)
 
 void printHanoi(hanoi *tower)
 {
-    printf("######### hanoi tower #########\n");
+    node *aux1 = tower->stack1->top, *aux2 = tower->stack2->top, *aux3 = tower->stack3->top;
 
-    for (int i = 2; i >= 0; i--)
+    if(aux1 == NULL || stackLength(tower->stack1) < 3) printf("       ");
+    else if(stackLength(tower->stack1) == 3)
     {
-        node *aux1 = tower->stack1->top;
-        node *aux2 = tower->stack2->top;
-        node *aux3 = tower->stack3->top;
-
-        // Print the disks in each stack
-        printf("   ");
-        printf("%c", aux1 && stackLength(tower->stack1) > i ? ('0' + aux1->value) : '|');
-        printf("    ");
-        printf("%c", aux2 && stackLength(tower->stack2) > i ? ('0' + aux2->value) : '|');
-        printf("    ");
-        printf("%c", aux3 && stackLength(tower->stack3) > i ? ('0' + aux3->value) : '|');
-        printf("\n");
+        printf("   #   ");
+        if(aux1 != NULL) aux1 = aux1->next;
     }
+    if(aux2 == NULL|| stackLength(tower->stack2) < 3) printf("       ");
+    else if(stackLength(tower->stack2) == 3)
+    {
+        printf("   #   ");
+        if(aux2 != NULL) aux2 = aux2->next;
+    }
+    if(aux3 == NULL|| stackLength(tower->stack3) < 3) printf("       ");
+    else if(stackLength(tower->stack3) == 3)
+    {
+        printf("   #   ");
+        if(aux3 != NULL) aux3 = aux3->next;
+    }
+    printf("\n");
 
-    // Print the base of the stacks
-    printf("  ---  ---  ---\n");
-    printf("   1    2    3\n\n");
+    if(aux1 == NULL || stackLength(tower->stack1) < 2) printf("       ");
+    else if(stackLength(tower->stack1) >= 2 && aux1->value == 2)
+    {
+        printf("  ###  ");
+        if(aux1 != NULL) aux1 = aux1->next;
+    }
+    else if(stackLength(tower->stack1) >= 2 && aux1->value == 1)
+    {
+        printf("   #   ");
+        if(aux1 != NULL) aux1 = aux1->next;
+    }
+    if(aux2 == NULL || stackLength(tower->stack2) < 2) printf("       ");
+    else if(stackLength(tower->stack2) >= 2 && aux2->value == 2)
+    {
+        printf("  ###  ");
+        if(aux2 != NULL) aux2 = aux2->next;
+    }
+    else if(stackLength(tower->stack2) >= 2 && aux2->value == 1)
+    {
+        printf("   #   ");
+        if(aux2 != NULL) aux2 = aux2->next;
+    }
+    if(aux3 == NULL || stackLength(tower->stack3) < 2) printf("       ");
+    else if(stackLength(tower->stack3) >= 2 && aux3->value == 2)
+    {
+        printf("  ###  ");
+        if(aux3 != NULL) aux3 = aux3->next;
+    }
+    else if(stackLength(tower->stack3) >= 2 && aux3->value == 1)
+    {
+        printf("   #   ");
+        if(aux3 != NULL) aux3 = aux3->next;
+    }
+    printf("\n");
+
+    if(aux1 == NULL) printf("       ");
+    else if(stackLength(tower->stack1) >= 1 && aux1->value == 3) printf(" ##### ");
+    else if(stackLength(tower->stack1) >= 1 && aux1->value == 2) printf("  ###  ");
+    else if(stackLength(tower->stack1) >= 1 && aux1->value == 1) printf("   #   ");
+    if(aux2 == NULL) printf("       ");
+    else if(stackLength(tower->stack2) >= 1 && aux2->value == 3) printf(" ##### ");
+    else if(stackLength(tower->stack2) >= 1 && aux2->value == 2) printf("  ###  ");
+    else if(stackLength(tower->stack2) >= 1 && aux2->value == 1) printf("   #   ");
+    if(aux3 == NULL) printf("       ");
+    else if(stackLength(tower->stack3) >= 1 && aux3->value == 3) printf(" ##### ");
+    else if(stackLength(tower->stack3) >= 1 && aux3->value == 2) printf("  ###  ");
+    else if(stackLength(tower->stack3) >= 1 && aux3->value == 1) printf("   #   ");
+    printf("\n");
 }
 
 void moveHanoi(hanoi *tower, int takeStack, int receiveStack)
@@ -103,6 +152,7 @@ void moveHanoi(hanoi *tower, int takeStack, int receiveStack)
 
 void playHanoi(hanoi *tower)
 {
+    printf("######### hanoi tower #########\n");
     int takeStack, receiveStack;
     printHanoi(tower);
 
