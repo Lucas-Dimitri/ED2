@@ -50,7 +50,7 @@ void possivelCliente()
 void comecaMercado()
 {
     mercado *meuMercado = criaMercado(5);
-
+    
 }
 
 int main(void)
