@@ -3,6 +3,7 @@
 typedef struct arvBinaria
 {
     int info;
+    int altura;
     struct arvBinaria *esq;
     struct arvBinaria *dir;
 } arvBinaria;
@@ -14,8 +15,6 @@ arvBinaria *buscaArvBinaria(arvBinaria *r, int valor)
     else if (r->info > valor) return buscaArvBinaria(r->dir, valor);
     else return r;
 }
-
-
 
 int main(void)
 {
