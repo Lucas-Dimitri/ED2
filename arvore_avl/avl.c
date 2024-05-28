@@ -23,27 +23,25 @@ int avl_atualiza_fb_altura(avl *arv)
 }
 
 void avl_rot_dir(avl **raiz)
-{ // Passagem por referência dupla
+{
     avl *u = *raiz;
     avl *v = u->esq;
     u->esq = v->dir;
     v->dir = u;
-    *raiz = v; // Atualiza a raiz após a rotação
+    *raiz = v;
 
-    // Atualiza alturas e fatores de balanceamento
     avl_atualiza_fb_altura(u);
     avl_atualiza_fb_altura(*raiz);
 }
 
 void avl_rot_esq(avl **raiz)
-{ // Passagem por referência dupla
+{
     avl *u = *raiz;
     avl *v = u->dir;
     u->dir = v->esq;
     v->esq = u;
-    *raiz = v; // Atualiza a raiz após a rotação
+    *raiz = v;
 
-    // Atualiza alturas e fatores de balanceamento
     avl_atualiza_fb_altura(u);
     avl_atualiza_fb_altura(*raiz);
 }
@@ -92,7 +90,7 @@ void rebalanceamento(avl **raiz)
             avl_rot_esq(raiz);
         }
     }
-    // Verifica se o desequilíbrio se propagou para cima
+    
     rebalanceamento(&(arv->esq));
     rebalanceamento(&(arv->dir));
 }
@@ -107,5 +105,5 @@ avl *buscaavl(avl *r, int valor)
 
 int main(void)
 {
-    
+
 }
