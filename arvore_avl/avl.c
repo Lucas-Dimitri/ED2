@@ -1,68 +1,108 @@
 #include <stdlib.h>
 
-typedef struct arvBinaria
+typedef struct avl
 {
     int info;
     int altura;
     int fb;
-    struct arvBinaria *esq;
-    struct arvBinaria *dir;
-} arvBinaria;
+    struct avl *esq;
+    struct avl *dir;
+} avl;
 
-int attFB(arvBinaria *arv)
+int avl_atualiza_fb_altura(avl *arv)
 {
-    if(arv == NULL) return 0;
+    if (arv == NULL) return -1;
 
-    int altDir = attFB(arv->esq);
-    int altEsq = attFB(arv->dir);
+    int altEsq = avl_atualiza_fb_altura(arv->esq);
+    int altDir = avl_atualiza_fb_altura(arv->dir);
 
-    // Atualiza a altura da arvore
     arv->altura = 1 + (altEsq > altDir ? altEsq : altDir);
-
-    // Atualiza o fb da arvore
     arv->fb = altDir - altEsq;
 
     return arv->altura;
 }
 
-void rebalanceamento(arvBinaria *arv)
+void avl_rot_dir(avl **raiz)
+{ // Passagem por referência dupla
+    avl *u = *raiz;
+    avl *v = u->esq;
+    u->esq = v->dir;
+    v->dir = u;
+    *raiz = v; // Atualiza a raiz após a rotação
+
+    // Atualiza alturas e fatores de balanceamento
+    avl_atualiza_fb_altura(u);
+    avl_atualiza_fb_altura(*raiz);
+}
+
+void avl_rot_esq(avl **raiz)
+{ // Passagem por referência dupla
+    avl *u = *raiz;
+    avl *v = u->dir;
+    u->dir = v->esq;
+    v->esq = u;
+    *raiz = v; // Atualiza a raiz após a rotação
+
+    // Atualiza alturas e fatores de balanceamento
+    avl_atualiza_fb_altura(u);
+    avl_atualiza_fb_altura(*raiz);
+}
+
+void rebalanceamento(avl **raiz)
 {
-    if (arv->fb == 2 )
+    if (*raiz == NULL)
+        return;
+
+    avl *arv = *raiz;
+    int fb = arv->fb;
+
+    if (fb == 2)
     {
-        if (arv->esq == 1) rotE(arv);
-        if (arv->dir == 1) rotD(arv);
-        if (arv->esq == -1) rotE(arv->esq);
-        if (arv->dir == -1) rotD(arv);
+        if (arv->esq->fb == 1) avl_rot_dir(raiz);
+
+        else if (arv->dir->fb == 1) avl_rot_esq(raiz);
+
+        else if (arv->esq->fb == -1)
+        {
+            avl_rot_esq(&(arv->esq));
+            avl_rot_dir(raiz);
+        }
+
+        else if(arv->dir->fb == -1)
+        {
+            avl_rot_dir(&(arv->dir));
+            avl_rot_esq(raiz);
+        }
     }
-    
+    else if (fb == -2)
+    {
+        if (arv->esq->fb == -1) avl_rot_dir(raiz);
+
+        else if (arv->dir->fb == -1) avl_rot_esq(raiz);
+
+        else if (arv->esq->fb == 1)
+        {
+            avl_rot_esq(&(arv->esq));
+            avl_rot_dir(raiz);
+        }
+
+        else if (arv->dir->fb == 1)
+        {
+            avl_rot_dir(&(arv->dir));
+            avl_rot_esq(raiz);
+        }
+    }
+    // Verifica se o desequilíbrio se propagou para cima
+    rebalanceamento(&(arv->esq));
+    rebalanceamento(&(arv->dir));
 }
 
-void rotD(arvBinaria *arv)
+avl *buscaavl(avl *r, int valor)
 {
-    arvBinaria *q = arv->esq, *temp = q->dir;
-    q->dir = arv;
-    arv->esq = temp;
-    arv = q;
-}
-
-void rotE(arvBinaria *arv)
-{
-    arvBinaria *q = arv->dir, *temp = q->esq;
-    q->esq = arv;
-    arv->dir = temp;
-    arv = q;
-}
-
-arvBinaria *buscaArvBinaria(arvBinaria *r, int valor)
-{
-    if (r == NULL)
-        return NULL;
-    else if (r->info < valor)
-        return buscaArvBinaria(r->esq, valor);
-    else if (r->info > valor)
-        return buscaArvBinaria(r->dir, valor);
-    else
-        return r;
+    if (r == NULL) return NULL;
+    else if (r->info < valor) return buscaavl(r->esq, valor);
+    else if (r->info > valor) return buscaavl(r->dir, valor);
+    else return r;
 }
 
 int main(void)

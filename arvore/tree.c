@@ -64,10 +64,7 @@ void arv_print_pos_order(tree *myTree)
     printf("\n");
 }
 
-int arv_vazia(tree *arv) {
-    if(arv == NULL) return 0;
-    else return 1;
-}
+int arv_vazia(tree *arv) { return arv == NULL ? 0 : 1; }
 
 int arv_pertence(tree *arv, int num)
 {
