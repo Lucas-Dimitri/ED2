@@ -380,7 +380,7 @@ void main(int argc, char **argv)
 
     for (ct = maxnum; ct; ct--)
     {
-        a = rand() % 9 + 1;~
+        a = rand() % 9 + 1;
         if ((t = findNode(a)) != NULL)
         {
             deleteNode(t);
