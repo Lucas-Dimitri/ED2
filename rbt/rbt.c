@@ -384,6 +384,48 @@ Node *findNode(T data)
     return (0);
 }
 
+void generateDOT(Node *root, FILE *file)
+{
+    if (root != NIL)
+    {
+        if (root->left != NIL)
+        {
+            fprintf(file, "    %d -> %d [color=%s];\n", root->data, root->left->data, root->left->color == RED ? "red" : "black");
+            generateDOT(root->left, file);
+        }
+        if (root->right != NIL)
+        {
+            fprintf(file, "    %d -> %d [color=%s];\n", root->data, root->right->data, root->right->color == RED ? "red" : "black");
+            generateDOT(root->right, file);
+        }
+    }
+}
+
+void exportToDOT(Node *root, const char *filename)
+{
+    FILE *file = fopen(filename, "w");
+    if (file == NULL)
+    {
+        fprintf(stderr, "Erro ao abrir o arquivo.\n");
+        return;
+    }
+
+    fprintf(file, "digraph RedBlackTree {\n");
+    fprintf(file, "    node [fontname=\"Arial\"];\n");
+
+    if (root == NIL)
+    {
+        fprintf(file, "\n");
+    }
+    else
+    {
+        generateDOT(root, file);
+    }
+
+    fprintf(file, "}\n");
+    fclose(file);
+}
+
 void main(int argc, char **argv)
 {
     int a, maxnum, ct;
@@ -412,4 +454,5 @@ void main(int argc, char **argv)
             insertNode(a);
         }
     }
+    exportToDOT(root, "rbt.dot");
 }
