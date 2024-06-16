@@ -1,0 +1,10 @@
+Valor adicionado a arvore: 6
+Valor adicionado a arvore: 9
+Valor adicionado a arvore: 8
+Valor adicionado a arvore: 5
+Valor removido da arvore: 9
+Valor adicionado a arvore: 2
+Valor adicionado a arvore: 4
+Valor adicionado a arvore: 1
+Valor removido da arvore: 8
+Valor adicionado a arvore: 3

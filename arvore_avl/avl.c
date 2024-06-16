@@ -1,5 +1,5 @@
-#include <stdlib.h>
 
+#include <stdlib.h>
 typedef struct avl
 {
     int info;

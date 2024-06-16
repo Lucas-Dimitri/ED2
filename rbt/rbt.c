@@ -25,10 +25,10 @@ typedef struct Node_
     T data;               /* data stored in node */
 } Node;
 
-#define NIL &sentinel /* all leafs are sentinels */
-Node sentinel = {NIL, NIL, 0, BLACK, 0};
+#define NIL &sentinel           /* all leafs are sentinels */
+Node sentinel = { NIL, NIL, 0, BLACK, 0};
 
-Node *root = NIL; /* root of Red-Black tree */
+Node *root = NIL;               /* root of Red-Black tree */
 
 void rotateLeft(Node *x)
 {
@@ -175,6 +175,17 @@ void insertFixup(Node *x)
 
 Node *insertNode(T data)
 {
+    /* Salvando insercao de nodo na arvore no arquivo */
+    FILE *file;
+    file = fopen("rbt.txt", "a");
+    if(file == NULL)
+    {
+        printf("Erro ao abrir o arquivo.\n");
+        return 1;
+    }
+    fprintf(file, "Valor adicionado a arvore: %i\n", data);
+    fclose(file);
+
     Node *current, *parent, *x;
 
     /***********************************************
@@ -299,6 +310,17 @@ void deleteFixup(Node *x)
 
 void deleteNode(Node *z)
 {
+    /* Salvando insercao de nodo na arvore no arquivo */
+    FILE *file;
+    file = fopen("rbt.txt", "a");
+    if (file == NULL)
+    {
+        printf("Erro ao abrir o arquivo.\n");
+        return;
+    }
+    fprintf(file, "Valor removido da arvore: %i\n", z->data);
+    fclose(file);
+
     Node *x, *y;
 
     /*****************************
