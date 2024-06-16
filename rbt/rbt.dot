@@ -1,8 +1,4 @@
 digraph RedBlackTree {
     node [fontname="Arial"];
-    6 -> 2 [color=black];
-    2 -> 1 [color=red];
-    2 -> 4 [color=red];
-    6 -> 8 [color=black];
-    8 -> 7 [color=red];
+    4 -> 8 [color=red];
 }

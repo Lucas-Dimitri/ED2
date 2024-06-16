@@ -1,3 +1,9 @@
+/* Atividade de Red-Black*/
+
+/* Foi incrementado nas funcoes de insert e remove um algoritmo para gravar quando um nodo eh adicionado ou removido para realizar o LOG*/
+/* funcoes exportToDOT & generateDOT sao responsaveis por gerar o arquivo DOT para a arvore red-black*/
+
+
 /* red-black tree */
 
 #include <stdio.h>
@@ -111,13 +117,23 @@ void insertFixup(Node *x)
     /* check Red-Black properties */
     while (x != root && x->parent->color == RED)
     {
+
+        FILE *file;
+        file = fopen("rbt.txt", "a");
+        if (file == NULL)
+        {
+            printf("Erro ao abrir o arquivo.\n");
+            exit(1);
+        }
+        fprintf(file, "Desbalanceamento devido ao pai de (%i) ser vermelho\n", x->data);
+
         /* we have a violation */
         if (x->parent == x->parent->parent->left)
         {
             Node *y = x->parent->parent->right;
             if (y->color == RED)
             {
-
+                fprintf(file, "Trocando a cor do pai, tio e avo do nodo (%i) para rebalancear a arvore.\n", x->data);
                 /* uncle is RED */
                 x->parent->color = BLACK;
                 y->color = BLACK;
@@ -126,15 +142,15 @@ void insertFixup(Node *x)
             }
             else
             {
-
                 /* uncle is BLACK */
                 if (x == x->parent->right)
                 {
+                    fprintf(file, "Rotacionando o pai de (%i) a esquerda.\n", x->data);
                     /* make x a left child */
                     x = x->parent;
                     rotateLeft(x);
                 }
-
+                fprintf(file, "Trocando a cor do pai e do avo de (%i), e rotacionando a direita o avo.\n", x->data);
                 /* recolor and rotate */
                 x->parent->color = BLACK;
                 x->parent->parent->color = RED;
@@ -148,7 +164,7 @@ void insertFixup(Node *x)
             Node *y = x->parent->parent->left;
             if (y->color == RED)
             {
-
+                fprintf(file, "Trocando a cor do pai, tio e avo do nodo (%i) para rebalancear a arvore.\n", x->data);
                 /* uncle is RED */
                 x->parent->color = BLACK;
                 y->color = BLACK;
@@ -157,18 +173,21 @@ void insertFixup(Node *x)
             }
             else
             {
-
                 /* uncle is BLACK */
                 if (x == x->parent->left)
                 {
+                    fprintf(file, "Rotacionando o pai de (%i) a direita.\n", x->data);
                     x = x->parent;
                     rotateRight(x);
                 }
+                fprintf(file, "Trocando a cor do pai e do avo de (%i), e rotacionando a esquerda o avo.\n", x->data);
+                /* recolor and rotate */
                 x->parent->color = BLACK;
                 x->parent->parent->color = RED;
                 rotateLeft(x->parent->parent);
             }
         }
+        fclose(file);
     }
     root->color = BLACK;
 }
@@ -181,7 +200,7 @@ Node *insertNode(T data)
     if(file == NULL)
     {
         printf("Erro ao abrir o arquivo.\n");
-        return 1;
+        exit(1);
     }
     fprintf(file, "Valor adicionado a arvore: %i\n", data);
     fclose(file);
@@ -242,11 +261,21 @@ void deleteFixup(Node *x)
 
     while (x != root && x->color == BLACK)
     {
+        FILE *file;
+        file = fopen("rbt.txt", "a");
+        if (file == NULL)
+        {
+            printf("Erro ao abrir o arquivo.\n");
+            exit(1);
+        }
+        fprintf(file, "Desbalanceamento devido ao nodo de valor (%i) ser preto\n", x->data);
+
         if (x == x->parent->left)
         {
             Node *w = x->parent->right;
             if (w->color == RED)
             {
+                fprintf(file, "Alterando a cor do irmao de (%i), trocando a cor do pai para vermelhor e rotacionando o pai para a esquerda.\n", x->data);
                 w->color = BLACK;
                 x->parent->color = RED;
                 rotateLeft(x->parent);
@@ -254,6 +283,7 @@ void deleteFixup(Node *x)
             }
             if (w->left->color == BLACK && w->right->color == BLACK)
             {
+                fprintf(file, "Se os filhos de (%i) forem pretos, deixa a sua propria cor em vermelho.\n", w->data);
                 w->color = RED;
                 x = x->parent;
             }
@@ -261,11 +291,13 @@ void deleteFixup(Node *x)
             {
                 if (w->right->color == BLACK)
                 {
+                    fprintf(file, "Se o filho da direita de (%i) for preto, troca a cor do filho a esquerda para preto, a sua propria para vermelho e faz uma rotacao em si para a direita.\n", w->data);
                     w->left->color = BLACK;
                     w->color = RED;
                     rotateRight(w);
                     w = x->parent->right;
                 }
+                fprintf(file, "Deixa a cor de (%i) igual a de (%i) e muda a cor desse para preto. A cor do filho a direita de (%i) se torna preta, e rotaciona o pai de (%i) para a esquerda\n", w->data, x->parent, w->data, x->data);
                 w->color = x->parent->color;
                 x->parent->color = BLACK;
                 w->right->color = BLACK;
@@ -278,6 +310,7 @@ void deleteFixup(Node *x)
             Node *w = x->parent->left;
             if (w->color == RED)
             {
+                fprintf(file, "Alterando a cor do irmao de (%i), trocando a cor do pai para vermelho e rotacionando o pai para a direita.\n", x->data);
                 w->color = BLACK;
                 x->parent->color = RED;
                 rotateRight(x->parent);
@@ -285,6 +318,7 @@ void deleteFixup(Node *x)
             }
             if (w->right->color == BLACK && w->left->color == BLACK)
             {
+                fprintf(file, "Se os filhos de (%i) forem pretos, deixa a sua propria cor em vermelho.\n", w->data);
                 w->color = RED;
                 x = x->parent;
             }
@@ -292,11 +326,13 @@ void deleteFixup(Node *x)
             {
                 if (w->left->color == BLACK)
                 {
+                    fprintf(file, "Se o filho da direita de (%i) for preto, troca a cor do filho a direita para preto, a sua propria para vermelho e faz uma rotacao em si para a esquerda.\n", w->data);
                     w->right->color = BLACK;
                     w->color = RED;
                     rotateLeft(w);
                     w = x->parent->left;
                 }
+                fprintf(file, "Deixa a cor de (%i) igual a de (%i) e muda a cor desse para preto. A cor do filho a esquerda de (%i) se torna preta, e rotaciona o pai de (%i) para a direita\n", w->data, x->parent, w->data, x->data);
                 w->color = x->parent->color;
                 x->parent->color = BLACK;
                 w->left->color = BLACK;
@@ -304,6 +340,7 @@ void deleteFixup(Node *x)
                 x = root;
             }
         }
+        fclose(file);
     }
     x->color = BLACK;
 }
@@ -316,7 +353,7 @@ void deleteNode(Node *z)
     if (file == NULL)
     {
         printf("Erro ao abrir o arquivo.\n");
-        return;
+        exit(1);
     }
     fprintf(file, "Valor removido da arvore: %i\n", z->data);
     fclose(file);
@@ -407,7 +444,7 @@ void exportToDOT(Node *root, const char *filename)
     if (file == NULL)
     {
         fprintf(stderr, "Erro ao abrir o arquivo.\n");
-        return;
+        exit(1);
     }
 
     fprintf(file, "digraph RedBlackTree {\n");
