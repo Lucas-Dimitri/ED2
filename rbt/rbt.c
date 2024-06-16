@@ -1,7 +1,8 @@
 /* Atividade de Red-Black*/
 
 /* Foi incrementado nas funcoes de insert e remove um algoritmo para gravar quando um nodo eh adicionado ou removido para realizar o LOG*/
-/* funcoes exportToDOT & generateDOT sao responsaveis por gerar o arquivo DOT para a arvore red-black*/
+/* Funcoes exportToDOT & generateDOT sao responsaveis por gerar o arquivo DOT para a arvore red-black*/
+/* Foram inseridos algoritmos adicionais nas funcoes insertFixup e deleteFixup, para atualizar o LOG quando houver rebalanceamento ou recolorimento da arvore red-black*/
 
 
 /* red-black tree */
