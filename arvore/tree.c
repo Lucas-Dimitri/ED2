@@ -92,7 +92,8 @@ int max_2_int(int a, int b) { return (a>b) ? a : b; }
 int arv_altura(tree *arv)
 {
     if(arv_vazia(arv)) return -1;
-    else return 1 + max2(arv_altura(arv->raiz->left), arv_altura(arv->raiz->right));
+    else
+        return 1 + max_2_int(arv_altura(arv->raiz->left), arv_altura(arv->raiz->right));
 }
 
 tree *arv_busca(tree *arv, int num)

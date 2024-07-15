@@ -1,0 +1,8 @@
+digraph AVLTree {
+"Game D" -> "Game B";
+"Game D" -> "Game F";
+"Game B" -> "Game A";
+"Game B" -> "Game C";
+"Game F" -> "Game E";
+"Game F" -> "Game G";
+}
